@@ -51,6 +51,10 @@ class CMakeBuild(build_ext):
             # "-DBUILD_VGICP_CUDA=ON",
             "-DBUILD_PYTHON_BINDINGS=ON",
         ]
+        # Adding CMake arguments set as environment variable
+        # (needed e.g. to build against a conda-provided PCL: CMAKE_ARGS="-DBUILD_apps=OFF")
+        if "CMAKE_ARGS" in os.environ:
+            cmake_args += [item for item in os.environ["CMAKE_ARGS"].split(" ") if item]
         build_args = []
 
         if self.compiler.compiler_type != "msvc":
